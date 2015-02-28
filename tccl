@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+
+my $device_name = shift;
+my $mounted_dir = "/mnt/$device_name";
+
+my $device_path = "/dev/mapper/$device_name";
+my $ret;
+if(-d $mounted_dir && check_device($device_path, $mounted_dir)) {
+    $ret = system("umount $mounted_dir");
+    die $^E if $ret;
+
+    rmdir $mounted_dir;
+}
+
+$ret = system("cryptsetup close $device_path");
+die $^E if $ret;
+
+sub check_device
+{
+    my $device_path = shift;
+    my $mounted_dir = shift;
+    my $mtab = `mount`;
+    return $mtab =~ m|^$device_path on $mounted_dir|m;
+}
+

@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+
+use File::Spec;
+
+my $filepath = shift;
+
+my $device_name;
+if (@ARGV) {
+    $device_name = shift;
+}
+else {
+    (undef, undef, $device_name) = File::Spec->splitpath($filepath);
+    $device_name =~ s/\.tc$//;
+}
+
+my $ret = system("cryptsetup --type tcrypt open $filepath $device_name");
+die $^E if $ret;
+
+my $target_dir = "/mnt/$device_name";
+unless(-d $target_dir) {
+    mkdir $target_dir;
+}
+
+$ret = system("mount /dev/mapper/$device_name $target_dir");
+die $^E if $ret;
+
