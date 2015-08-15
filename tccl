@@ -1,5 +1,9 @@
 #!/usr/bin/perl
 
+unless (@ARGV) {
+    die "Usage: $0 <mounted-device-name>\n";
+}
+
 my $device_name = shift;
 my $mounted_dir = "/mnt/$device_name";
 
