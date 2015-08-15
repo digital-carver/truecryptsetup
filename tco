@@ -2,6 +2,10 @@
 
 use File::Spec;
 
+unless (@ARGV) {
+    die "Don't know what to open.\nUsage: $0 <path-to-TC-volume> [<mount-device-name>]\n";
+}
+
 my $filepath = shift;
 
 my $device_name;
