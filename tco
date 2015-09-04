@@ -1,5 +1,9 @@
 #!/usr/bin/perl
 
+use strict;
+use warnings;
+use English;
+
 use File::Spec;
 
 unless (@ARGV) {
